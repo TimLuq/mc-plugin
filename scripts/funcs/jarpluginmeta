@@ -1,0 +1,25 @@
+#!/bin/bash
+
+function jarpluginmeta {
+  local f="$1"
+  if [ ! -f "$f" ]; then
+    local fen="$MINECRAFTDIR/plugins/$1.jar"
+    local fav="$PLUGINDIR/$1/snapshot/$1.jar"
+    if [ -f "$fen" ]; then
+      local f="$fen"
+    elif [ -f "$fav" ]; then
+      local f="$fav"
+    else
+      echo "jarpluginmeta: no plugin '$1' found." >&2
+      return 8
+    fi
+  fi
+  unzip -p "$f" "plugin.yml"
+  return $?
+}
+
+function jarpluginversion {
+  jarpluginmeta "$@" | grep -A3 "^version:" | sed 's/#.*//' | sed '/^version: *//' | sed 's/^ *//' | sed 's/ *$//' | grep '.' | head -N 1
+}
+
+
