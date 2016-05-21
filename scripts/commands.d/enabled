@@ -1,0 +1,26 @@
+#!/bin/bash
+
+. "$SCRIPTDIR/funcs/jarpluginmeta"
+. "$SCRIPTDIR/funcs/mcpluginmeta"
+
+for i in "$MINECRAFTDIR"/plugins/*.jar; do
+  if [ "$i" != "$MINECRAFTDIR"'/plugins/*.jar' ]; then
+    f="${i##*/}"
+    n="${f%.jar}"
+    p="_external_"
+    r="unknown"
+    pf="${f%/*}/.$n.mc_plugin"
+    if [ -f "$pf" ]; then
+      p="$(mcpluginmeta "$pf" "package")"
+      r="$(mcpluginmeta "$pf" "release")"
+    fi
+    "$MINECRAFTDIR"'/plugins/
+    if [ "$1" == "verbose" ] || [ "$1" == "-v" ]; then
+      echo "$p:$r:$n"
+      jarpluginmeta "$i" | sed 's/^/    /'
+    else
+      v="$(jarpluginversion "$i")"
+      echo "$p:$r:$n:$v"
+    fi
+  fi
+done
