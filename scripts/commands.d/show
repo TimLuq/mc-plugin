@@ -1,0 +1,65 @@
+#!/bin/bash
+
+plugin="${1%:*}"
+release="${1##*:}"
+installedrelease=""
+package=""
+
+. "$SCRIPTDIR/funcs/jarpluginmeta"
+. "$SCRIPTDIR/funcs/mcpluginmeta"
+
+f="$MINECRAFTDIR/plugins/.$plugin.mc_plugin"
+if [ -f "$f" ]; then
+  package="$(mcpluginmeta "$f" "package")"
+  installedrelease="$(mcpluginmeta "$f" "release")"
+  if [[ "$release" == "$1" ]] || [[ "$release" == "" ]]; then
+    release="$installedrelease"
+  fi
+elif [ -d "$PLUGINDIR/$plugin" ]; then
+  package="$plugin"
+fi
+
+if [[ "$release" == "$1" ]] || [[ "$release" == "" ]]; then
+  if [ -f "$PLUGINDIR/$plugin/default_release.conf" ]; then
+    release="$(cat "$PLUGINDIR/$plugin/default_release.conf" | grep -o "^[^#][^#]*")"
+  elif [ -d "$PLUGINDIR/$plugin/beta" ]; then
+    release=beta
+  elif [ -d "$PLUGINDIR/$plugin/snapshot" ]; then
+    release=snapshot
+  elif [ -d "$PLUGINDIR/$plugin/stable" ]; then
+    release=stable
+  else
+    release=latest
+  fi
+fi
+
+fen="$MINECRAFTDIR/plugins/$plugin.jar"
+fav="$PLUGINDIR/$package/$release/bin/$plugin.jar"
+f=""
+if [ -f "$fen" ]; then
+  f="$fen"
+  irel="$installedrelease"
+  if [[ "$irel" == "" ]]; then
+    irel="unknown"
+  fi
+  pkg="$package"
+  if [[ "$pkg" == "" ]]; then
+    pkg="_external_"
+  fi
+  echo "installed $pkg:$irel:$plugin:$(jarpluginversion "$fen")"
+  if [[ "$package" != "" ]] && [ -f "$fav" ]; then
+    echo "available $package:$release:$plugin:$(jarpluginversion "$fav")"
+    f="$fav"
+  else
+    echo "no available version"
+  fi
+elif [[ "$package" != "" ]] && [ -f "$fav" ]; then
+  echo "no installed version"
+  echo "available $package:$release:$plugin:$(jarpluginversion "$fav")"
+  f="$fav"
+else
+  echo "$0: No plugin '$plugin' installed." >&2
+  exit 17
+fi
+
+jarpluginmeta "$f"
