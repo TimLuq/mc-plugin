@@ -16,7 +16,7 @@ function mcpluginmeta {
     cat "$f"
     ret=$?
   else
-    grep "^\"$2\":" | sed 's/.*": *//' | sed 's/^ *"\(.*\)" *,? *$/\1/'
+    grep "^\"$2\":" "$f" | sed 's/.*": *//' | sed 's/^ *"\(.*\)" *,? *$/\1/'
     ret=$?
   fi
   return $ret
