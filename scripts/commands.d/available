@@ -1,0 +1,22 @@
+#!/bin/bash
+
+. "$SCRIPTDIR/funcs/jarpluginmeta"
+
+for i in "$PLUGINDIR"/*; do
+  if [ -d "$i" ]; then
+    echo "${i##*/}"
+    for j in "$i"/*; do
+      if [ -d "$j" ]; then
+        echo "  ${j##*/}"
+        for k in "$j"/bin/*.jar; do
+          n="${k##*/}"
+          n="${n%.jar}"
+          v="$(jarpluginversion "$k")"
+          if [ "$v" == "" ]; then
+            v=unknown
+          fi
+          echo "    $n:$v"
+        done
+      fi
+  fi
+done
