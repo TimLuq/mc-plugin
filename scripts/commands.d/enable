@@ -15,9 +15,10 @@ if [ ! -d "$MINECRAFTDIR/$plugin" ]; then
   echo "$0: '$plugin' is not an available plugin"
   exit 2
 fi
+
 if [[ "$release" == "$1" ]] || [[ "$release" == "" ]]; then
   if [ -f "$PLUGINDIR/$plugin/default_release.conf" ]; then
-    release="$(cat /plugins/$plugin/default_release.conf | grep -o "^[^#][^#]*")"
+    release="$(cat "$PLUGINDIR/$plugin/default_release.conf" | grep -o "^[^#][^#]*")"
   elif [ -d "$PLUGINDIR/$plugin/beta" ]; then
     release=beta
   elif [ -d "$PLUGINDIR/$plugin/snapshot" ]; then
