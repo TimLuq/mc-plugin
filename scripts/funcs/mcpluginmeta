@@ -1,0 +1,23 @@
+#!/bin/bash
+
+function mcpluginmeta {
+  local f="$1"
+  if [ ! -f "$f" ]; then
+    local fen="$MINECRAFTDIR/plugins/.$1.mc_plugin"
+    if [ -f "$fen" ]; then
+      local f="$fen"
+    else
+      echo "mcpluginmeta: installed plugin '$1' found." >&2
+      return 8
+    fi
+  fi
+  ret=64
+  if [[ "$2" == "" ]]; then
+    cat "$f"
+    ret=$?
+  else
+    grep "^\"$2\":" | sed 's/.*": *//' | sed 's/^ *"\(.*\)" *,? *$/\1/'
+    ret=$?
+  fi
+  return $ret
+}
