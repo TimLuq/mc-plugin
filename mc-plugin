@@ -1,0 +1,25 @@
+#!/bin/bash
+
+MCPLUGINROOT="$HOME/.mc-plugin"
+
+if [ ! -d "$MCPLUGINROOT" ]; then
+  mkdir "$MCPLUGINROOT"
+fi
+
+if [ ! -f "$MCPLUGINROOT/scripts/bootstrap.sh" ]; then
+  wget -O "/tmp/mc-plugin-master.zip" "https://github.com/TimLuq/mc-plugin/archive/master.zip"
+  if [[ "$?" != "0" ]]; then
+    echo "$0: Could not download the plugin archive. Unable to continue." >&2
+    exit 1
+  fi
+  cd /tmp
+  unzip "/tmp/mc-plugin-master.zip"
+  rsync -av "/tmp/mc-plugin-master/" "$MCPLUGINROOT"
+fi
+
+if [ ! -f "$MCPLUGINROOT/scripts/bootstrap.sh" ]; then
+  echo "$0: Could not find '$MCPLUGINROOT/scripts/bootstrap.sh'" >&2
+  exit 3
+fi
+
+. "$MCPLUGINROOT/scripts/bootstrap.sh"
