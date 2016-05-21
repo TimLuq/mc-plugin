@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ "$1" == "" ]; then
+  echo "Usage: $0 disable PLUGIN"
+  exit 1
+fi
+if [ ! -f "$MINECRAFTDIR/plugins/$1.jar" ]; then
+  echo "$0: '$1' is not an enabled plugin."
+  exit 2
+fi
+if [ ! -f "$MINECRAFTDIR/plugins/.$1.mc_plugin" ]; then
+  echo "$0: '$1' is not installed thru this tool,"
+  echo "$0:    if you wish to remove it type:"
+  echo "$0:         $0 remove '$1'"
+  exit 3
+fi
+rm "$MINECRAFTDIR/plugins/$1.jar"
+rm "$MINECRAFTDIR/plugins/.$1.mc_plugin"
