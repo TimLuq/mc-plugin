@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ "$1" == "" ]; then
+  echo "Usage: $0 remove PLUGIN"
+  exit 1
+fi
+if [ ! -f "$MINECRAFTDIR/plugins/$1.jar" ]; then
+  echo "$0: There is no plugin named '$1'"
+  exit 2
+fi
+rm "$MINECRAFTDIR/plugins/$1.jar"
+if [ -f "$MINECRAFTDIR/plugins/.$1.mc_plugin" ]; then
+  rm "$MINECRAFTDIR/plugins/.$1.mc_plugin"
+fi
+echo "$0: Plugin '$1' has been removed"
