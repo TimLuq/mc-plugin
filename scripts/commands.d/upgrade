@@ -1,0 +1,85 @@
+#!/bin/bash
+
+. "$SCRIPTDIR/funcs/mcpluginmeta"
+
+force=""
+if [[ "$1" != "-y" ]]; then
+  force="1"
+  shift
+fi
+
+function withupgradable {
+  local f="$1"
+  shift
+  local i=""
+  local r="1"
+  while (( $# )); do
+    local i="$1"
+    shift
+    if [[ "${i%.mc_plugin}" == "$i" ]]; then
+      if [ -f "$MINECRAFTDIR/plugins/.$i.mc_plugin" ]; then
+        local i="$MINECRAFTDIR/plugins/.$i.mc_plugin"
+      else
+        echo "$0: '$i' is not a managed plugin." >&2
+        continue
+      fi
+    fi
+    if [ -f "$i" ]; then
+      local name="$(mcpluginmeta "$i" "name")"
+      local pkg="$(mcpluginmeta "$i" "package")"
+      local release="$(mcpluginmeta "$i" "release")"
+      local enabled="$(mcpluginmeta "$i" "enabled")"
+      if [ -f "$PLUGINDIR/$pkg/$release/bin/$name.jar" ] && \
+          [[ "$(stat -c %Y "$PLUGINDIR/$pkg/$release/bin/$name.jar")0" -gt "${enabled}0" ]]; then
+        "$f" "$pkg" "$release" "$name"
+        local r="0"
+      fi
+    fi
+  done
+  return "$r"
+}
+
+function displayupgradename {
+  printf "%s " "$3"
+}
+
+if [[ "$force" == "" ]]; then
+  if (( $# )); then
+    withupgradable displayupgradename "$@" > /tmp/list.$$.tmp
+    ret="$?"
+  else
+    withupgradable displayupgradename "$MINECRAFTDIR/plugins"/.*.mc_plugin > /tmp/list.$$.tmp
+    ret="$?"
+  fi
+  if [[ "$ret" == "0" ]]; then
+    echo "These packages are in need of upgrade:"
+    column -t /tmp/list.$$.tmp
+    rm /tmp/list.$$.tmp
+    read -p "Do you wish to continue? (y/n) " -n 1 c
+    echo ""
+    if [[ "$c" != "Y" ]] && [[ "$c" != "y" ]]; then
+      exit 5
+    fi
+  else
+    rm /tmp/list.$$.tmp
+    echo "Nothing to upgrade."
+    exit 0
+  fi
+fi
+
+now="$(date "+%s")"
+
+function installupgrade {
+  cp "$PLUGINDIR/$1/$2/bin/$3.jar" "$MINECRAFTDIR/plugins/$3.jar"
+  mcpluginsetmetanum "$MINECRAFTDIR/plugins/.$3.mc_plugin" "enabled" "$now"
+  echo "Plugin '$3' has been upgraded."
+}
+
+if (( $# )); then
+  withupgradable installupgrade "$@" > /tmp/list.$$.tmp
+  ret="$?"
+else
+  withupgradable installupgrade "$MINECRAFTDIR/plugins"/.*.mc_plugin > /tmp/list.$$.tmp
+  ret="$?"
+fi
+
