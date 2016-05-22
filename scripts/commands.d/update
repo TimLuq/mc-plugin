@@ -1,0 +1,49 @@
+#!/bin/bash
+
+
+output="/dev/null"
+if [[ "$1" == "verbose" ]] || [[ "$1" == "-v" ]]; then
+  output="&1"
+fi
+
+git=""
+for i in "$MCPLUGINROOT/repositories.d"/*.url; do
+  f [ -f "$i" ]; then
+    if [[ "$git" == "" ]] && ! which git >/dev/null; then
+      echo "$0: No git found. git executable needed to update external repositories." >&2
+      break
+    fi
+    git="1"
+    repo="${i##*/}"
+    repo="${repo%.url}"
+    echo "Updating repository $repo..."
+    if [ ! -d "$MCPLUGINROOT/repositories/$repo" ]; then
+      mkdir "$MCPLUGINROOT/repositories/$repo"
+    fi
+    while read url branch || [ -n "$url" ]; do
+      if [[ "$branch" == "" ]]; then
+        branch="master"
+      fi
+      repodir="$(echo "$url $branch" | md5sum | grep -o "[a-zA-Z0-9]*")"
+      if [ -d "$MCPLUGINROOT/repositories/$repodir" ]; then
+        (cd "$MCPLUGINROOT/repositories/$repodir" && git checkout "$branch")
+      else
+        git clone "$url" --branch "$branch" --single-branch "$MCPLUGINROOT/repositories/$repodir"
+      fi
+      rsync -av "$MCPLUGINROOT/repositories/$repodir/mc-plugins/" "$PLUGINDIR"
+    done < "$i"
+  fi
+done
+
+for i in "$PLUGINSDIR"/*; do
+  if [ -d "$i" ]; then
+    plugin="${i##*/}"
+    for j in "$i"/*; do
+      if [ -d "$j" ]; then
+        release="${j##*/}"
+        echo "Updating $plugin:$release..."
+        (cd "$j" && "$MAKE") >"$output" || echo "Failed to update $plugin:$release" >&2
+      fi
+    done
+  fi
+done
