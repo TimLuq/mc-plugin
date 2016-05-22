@@ -7,7 +7,7 @@ function mcpluginmeta {
     if [ -f "$fen" ]; then
       local f="$fen"
     else
-      echo "mcpluginmeta: installed plugin '$1' found." >&2
+      echo "mcpluginmeta: installed plugin '$1' not found." >&2
       return 8
     fi
   fi
@@ -20,4 +20,32 @@ function mcpluginmeta {
     ret=$?
   fi
   return $ret
+}
+
+function mcpluginsetmetastr {
+  local f="$1"
+  if [ ! -f "$f" ]; then
+    local fen="$MINECRAFTDIR/plugins/.$1.mc_plugin"
+    if [ -f "$fen" ]; then
+      local f="$fen"
+    else
+      echo "mcpluginmeta: installed plugin '$1' not found." >&2
+      return 8
+    fi
+  fi
+  sed -i 's|^"'"$2"': *".*" *\(,?\) *$|"'"$2"'": "'"$3"'"\1|' "$f"
+}
+
+function mcpluginsetmetanum {
+  local f="$1"
+  if [ ! -f "$f" ]; then
+    local fen="$MINECRAFTDIR/plugins/.$1.mc_plugin"
+    if [ -f "$fen" ]; then
+      local f="$fen"
+    else
+      echo "mcpluginmeta: installed plugin '$1' not found." >&2
+      return 8
+    fi
+  fi
+  sed -i 's/^"'"$2"':[^,]*\(,?\) *$/"'"$2"'": '"$3"'\1/' "$f"
 }
