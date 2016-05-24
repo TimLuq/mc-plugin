@@ -26,7 +26,7 @@ for i in "$MCPLUGINROOT/repositories.d"/*.url; do
       fi
       repodir="$(echo "$url $branch" | md5sum | grep -o "[a-zA-Z0-9]*")"
       if [ -d "$MCPLUGINROOT/repositories/$repodir" ]; then
-        (cd "$MCPLUGINROOT/repositories/$repodir" && git checkout "$branch")
+        (cd "$MCPLUGINROOT/repositories/$repodir" && git pull)
       else
         git clone "$url" --branch "$branch" --single-branch "$MCPLUGINROOT/repositories/$repodir"
       fi
