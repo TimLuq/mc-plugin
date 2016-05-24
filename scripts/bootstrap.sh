@@ -26,7 +26,7 @@ if [[ "$needupdate" != "" ]]; then
     updatepath="$MCPLUGINROOT/git/mc-plugin"
     if [ -d "$updatepath" ]; then
       cd "$updatepath"
-      git pull –rebase
+      git pull
     else
       if [ ! -d "$MCPLUGINROOT/git" ]; then
         mkdir "$MCPLUGINROOT/git"
