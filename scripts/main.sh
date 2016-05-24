@@ -21,7 +21,7 @@ if [ ! -d "$HOME/.mc-plugins/profiles.d" ]; then
   mkdir "$HOME/.mc-plugins/profiles.d"
 fi
 
-while [ ! -f "$HOME/.mc-plugins/profiles.d/$MINECRAFTPROFILE" ]; then
+while [ ! -f "$HOME/.mc-plugins/profiles.d/$MINECRAFTPROFILE" ]; do
   printf "Enter Minecraft path for '$MINECRAFTPROFILE'.\n(Leave blank to abort)\n"
   read -p "Path: " -e mcpath
   if [[ "$mcpath" == "" ]]; then
@@ -35,7 +35,7 @@ while [ ! -f "$HOME/.mc-plugins/profiles.d/$MINECRAFTPROFILE" ]; then
   else
     echo "$0: could not find 'spigot.jar' at '$mcpath'" >&2
   fi
-fi
+done
 
 MINECRAFTDIR="$(grep "^\"minecraftdir\":" "$HOME/.mc-plugins/profiles.d/$MINECRAFTPROFILE" | sed 's/.*": *//' | sed 's/^ *"\(.*\)" *,? *$/\1/')"
 if [[ "$MINECRAFTDIR" == "" ]]; then
