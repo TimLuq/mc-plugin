@@ -8,7 +8,7 @@ fi
 
 git=""
 for i in "$MCPLUGINROOT/repositories.d"/*.url; do
-  f [ -f "$i" ]; then
+  if [ -f "$i" ]; then
     if [[ "$git" == "" ]] && ! which git >/dev/null; then
       echo "$0: No git found. git executable needed to update external repositories." >&2
       break
