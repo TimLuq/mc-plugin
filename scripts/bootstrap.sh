@@ -44,4 +44,4 @@ if [[ "$1" == "--update" ]] || [[ "$needupdate" != "" ]]; then
 fi
 
 cd "$MCPLUGINROOT"
-. "$MCPLUGINROOT/main.sh"
+. "$MCPLUGINROOT/scripts/main.sh"
