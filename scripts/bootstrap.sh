@@ -16,8 +16,11 @@ if [ -f "$MCPLUGINROOT/updated" ]; then
   fi
 fi
 
-if [[ "$1" == "--update" ]] || [[ "$needupdate" != "" ]]; then
+if [[ "$1" == "--update" ]]; then
+  needupdate=1
   shift
+fi
+if [[ "$needupdate" != "" ]]; then
   updatepath=""
   if which git >/dev/null; then
     updatepath="$MCPLUGINROOT/git/mc-plugin"
