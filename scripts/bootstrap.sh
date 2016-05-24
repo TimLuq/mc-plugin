@@ -24,7 +24,7 @@ if [[ "$1" == "--update" ]] || [[ "$needupdate" != "" ]]; then
       cd "$updatepath"
       git checkout
     else
-      if [ -d "$MCPLUGINROOT/git" ]; then
+      if [ ! -d "$MCPLUGINROOT/git" ]; then
         mkdir "$MCPLUGINROOT/git"
       fi
       cd "$MCPLUGINROOT/git"
