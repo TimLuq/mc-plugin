@@ -28,7 +28,7 @@ if [[ "$1" == "--update" ]] || [[ "$needupdate" != "" ]]; then
         mkdir "$MCPLUGINROOT/git"
       fi
       cd "$MCPLUGINROOT/git"
-      git clone "$gitpath"
+      git clone "$gitpath" --branch "master" --single-branch "$updatepath"
     fi
   else
     updatepath="$MCPLUGINROOT/zip/mc-plugin-master"
