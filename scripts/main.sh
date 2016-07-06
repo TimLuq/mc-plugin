@@ -34,7 +34,7 @@ while [ ! -f "$MCPLUGINROOT/profiles.d/$MINECRAFTPROFILE" ]; do
   mcpath="${mcpath%spigot.jar}"
   mcpath="${mcpath%/}"
   if [ -f "$mcpath/spigot.jar" ]; then
-    printf "{\n\"plugindir\":\"$plugindir\",\n\"minecraftdir\":\"$mcpath\"\n}" \
+    printf "{\n\"plugindir\":\"$PLUGINDIR\",\n\"minecraftdir\":\"$mcpath\"\n}" \
       > "$MCPLUGINROOT/profiles.d/$MINECRAFTPROFILE"
   else
     echo "$0: could not find 'spigot.jar' at '$mcpath'" >&2
