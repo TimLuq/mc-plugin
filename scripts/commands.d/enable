@@ -11,7 +11,7 @@ if [ -f "$MINECRAFTDIR/plugins/$plugin.jar" ]; then
   echo "$0: '$plugin' is already enabled"
   exit 7
 fi
-if [ ! -d "$MINECRAFTDIR/$plugin" ]; then
+if [ ! -d "$PLUGINDIR/$plugin" ]; then
   echo "$0: '$plugin' is not an available plugin"
   exit 2
 fi
