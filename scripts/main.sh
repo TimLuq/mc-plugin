@@ -54,8 +54,8 @@ if ! which "$MAKE" &> /dev/null; then
       exit 14
     fi
     chmod 755 "$MCPLUGINROOT/scripts/fake-make"
-    MAKE="$MCPLUGINROOT/scripts/fake-make"
   fi
+  MAKE="$MCPLUGINROOT/scripts/fake-make"
 fi
 
 COMMAND="$1"
