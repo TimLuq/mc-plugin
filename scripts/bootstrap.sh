@@ -44,6 +44,10 @@ if [[ "$needupdate" != "" ]]; then
   fi
   rsync -av "$updatepath/scripts" "$MCPLUGINROOT"
   rsync -av "$updatepath/repositories.d" "$MCPLUGINROOT"
+  if [ ! -d "$MCPLUGINROOT/plugins" ]; then
+    mkdir "$MCPLUGINROOT/plugins"
+  fi
+  rsync -av "$updatepath/mc-plugins/" "$MCPLUGINROOT/plugins"
   date "+%s" > "$MCPLUGINROOT/updated"
 fi
 
