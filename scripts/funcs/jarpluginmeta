@@ -19,7 +19,7 @@ function jarpluginmeta {
 }
 
 function jarpluginversion {
-  jarpluginmeta "$@" | grep -A3 "^version:" | sed 's/#.*//' | sed '/^version: *//' | sed 's/^ *//' | sed 's/ *$//' | grep '.' | head -N 1
+  jarpluginmeta "$@" | grep -A3 "^version:" | sed 's/#.*//' | sed 's/^version: *//' | sed 's/^ *//' | sed 's/ *$//' | grep '.' | head -N 1
 }
 
 
