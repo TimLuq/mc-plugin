@@ -58,6 +58,8 @@ if ! which "$MAKE" &> /dev/null; then
   MAKE="$MCPLUGINROOT/scripts/fake-make"
 fi
 
+SCRIPTDIR="$MCPLUGINROOT/scripts"
+
 COMMAND="$1"
 shift
 
