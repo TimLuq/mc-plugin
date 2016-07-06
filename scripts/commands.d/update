@@ -35,7 +35,7 @@ for i in "$MCPLUGINROOT/repositories.d"/*.url; do
   fi
 done
 
-for i in "$PLUGINSDIR"/*; do
+for i in "$PLUGINDIR"/*; do
   if [ -d "$i" ]; then
     plugin="${i##*/}"
     for j in "$i"/*; do
