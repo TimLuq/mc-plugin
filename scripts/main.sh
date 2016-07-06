@@ -1,7 +1,9 @@
 #!/bin/bash
 
 MINECRAFTPROFILE="default"
-MAKE="make"
+if [[ "$MAKE" == "" ]]; then
+  MAKE="make"
+fi
 
 if [[ "$1" == "-p" ]]; then
   if [[ "$2" == "" ]]; then
