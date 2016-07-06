@@ -62,4 +62,5 @@ else
   exit 17
 fi
 
+echo ""
 jarpluginmeta "$f"
