@@ -60,6 +60,10 @@ fi
 
 SCRIPTDIR="$MCPLUGINROOT/scripts"
 
+if [ ! -d "$MCPLUGINROOT/plugins" ]; then
+  mkdir "$MCPLUGINROOT/plugins"
+fi
+
 COMMAND="$1"
 shift
 
