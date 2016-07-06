@@ -1,6 +1,7 @@
 #!/bin/bash
 
 MINECRAFTPROFILE="default"
+MAKE="make"
 
 if [[ "$1" == "-p" ]]; then
   if [[ "$2" == "" ]]; then
@@ -44,6 +45,16 @@ if [[ "$MINECRAFTDIR" == "" ]]; then
   echo "$0: could not find minecraftdir for profile '/$MINECRAFTPROFILE'" >&2
 fi
 
+if ! which "$MAKE" &> /dev/null; then
+  if [ ! -x "$MCPLUGINROOT/scripts/fake-make" ]; then
+    if ! wget -O "$MCPLUGINROOT/scripts/fake-make" "https://raw.githubusercontent.com/TimLuq/fake-make/master/fake-make"; then
+      echo "$0: no make-tool" >&2
+      exit 14
+    fi
+    chmod 755 "$MCPLUGINROOT/scripts/fake-make"
+    MAKE="$MCPLUGINROOT/scripts/fake-make"
+  fi
+fi
 
 COMMAND="$1"
 shift
