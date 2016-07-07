@@ -51,5 +51,13 @@ if [[ "$needupdate" != "" ]]; then
   date "+%s" > "$MCPLUGINROOT/updated"
 fi
 
+for f in "$MCPLUGINROOT"/scripts/funcs/*; do
+  if [ -f "$f" ]; then
+    if [ ! -x "$f" ]; then
+      chmod +x "$f"
+    fi
+  fi
+done
+
 cd "$MCPLUGINROOT"
 . "$MCPLUGINROOT/scripts/main.sh"
