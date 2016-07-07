@@ -35,15 +35,46 @@ for i in "$MCPLUGINROOT/repositories.d"/*.url; do
   fi
 done
 
-for i in "$PLUGINDIR"/*; do
-  if [ -d "$i" ]; then
-    plugin="${i##*/}"
-    for j in "$i"/*; do
-      if [ -d "$j" ]; then
-        release="${j##*/}"
+if [[ "$#" == 0 ]]; then
+
+  for i in "$PLUGINDIR"/*; do
+    if [ -d "$i" ]; then
+      plugin="${i##*/}"
+      for j in "$i"/*; do
+        if [ -d "$j" ]; then
+          release="${j##*/}"
+          echo "Updating $plugin:$release..."
+          (cd "$j" && "$MAKE") >"$output" || echo "Failed to update $plugin:$release" >&2
+        fi
+      done
+    fi
+  done
+  
+else
+
+  while (( $# )); do
+    i="$1"
+    shift
+    plugin="${i%%:*}"
+    if [ -d "$PLUGINDIR/$plugin" ]; then
+      release="${i##*:}"
+      if [[ "$release" == "$i" ]]; then
+        for j in "$i"/*; do
+          if [ -d "$j" ]; then
+            release="${j##*/}"
+            echo "Updating $plugin:$release..."
+            (cd "$j" && "$MAKE") >"$output" || echo "Failed to update $plugin:$release" >&2
+          fi
+        done
+      elif [ -d "$PLUGINDIR/$plugin/$release" ]; then
         echo "Updating $plugin:$release..."
         (cd "$j" && "$MAKE") >"$output" || echo "Failed to update $plugin:$release" >&2
+      else
+        echo "$0: no release '$release' in package '$plugin'" >&2
       fi
-    done
-  fi
-done
+    else
+      echo "$0: no plugin package '$plugin'" >&2
+    fi
+  done
+
+fi
