@@ -54,8 +54,8 @@ if [[ "$force" == "" ]]; then
   if [[ "$ret" == "0" ]]; then
     echo "These packages are in need of upgrade:"
     column -t /tmp/list.$$.tmp
-    rm /tmp/list.$$.tmp
     read -p "Do you wish to continue? (y/n) " -n 1 c
+    rm /tmp/list.$$.tmp
     echo ""
     if [[ "$c" != "Y" ]] && [[ "$c" != "y" ]]; then
       exit 5
