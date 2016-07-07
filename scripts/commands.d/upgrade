@@ -40,7 +40,7 @@ function withupgradable {
 }
 
 function displayupgradename {
-  printf "%s " "$3"
+  printf "%s\n" "$3"
 }
 
 if [[ "$force" == "" ]]; then
