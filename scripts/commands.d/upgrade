@@ -76,10 +76,10 @@ function installupgrade {
 }
 
 if (( $# )); then
-  withupgradable installupgrade "$@" > /tmp/list.$$.tmp
+  withupgradable installupgrade "$@"
   ret="$?"
 else
-  withupgradable installupgrade "$MINECRAFTDIR/plugins"/.*.mc_plugin > /tmp/list.$$.tmp
+  withupgradable installupgrade "$MINECRAFTDIR/plugins"/.*.mc_plugin
   ret="$?"
 fi
 
