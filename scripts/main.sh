@@ -70,6 +70,11 @@ fi
 COMMAND="$1"
 shift
 
+
+export MCPLUGINCOMMAND="$COMMAND"
+export MCPLUGINROOT="$MCPLUGINROOT"
+export SCRIPTDIR="$SCRIPTDIR"
+
 cmd="$MCPLUGINROOT/scripts/commands.d/$COMMAND"
 if [ -f "$cmd" ]; then
   . "$cmd"
