@@ -18,6 +18,11 @@ function jarpluginmeta {
   return $?
 }
 
+if [[ "${0##*/}" == "jarpluginmeta" ]]; then
+  jarpluginmeta "$@"
+  exit "$?"
+fi
+
 function jarpluginversion {
   jarpluginmeta "$@" | grep -A3 "^version:" | sed 's/#.*//' | sed 's/^version: *//' | sed 's/^ *//' | sed 's/ *$//' | grep '.' | head -n 1
 }
