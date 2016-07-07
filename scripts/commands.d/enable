@@ -34,10 +34,7 @@ if [ ! -d "$PLUGINDIR/$plugin/$release" ]; then
   echo "$0: '$release' is not a valid release of '$plugin'"
   exit 3
 fi
-if ! which "$make" &> /dev/null; then
-  make="$fallmake"
-fi
-if ! (cd "$PLUGINDIR/$plugin" && "$make" "$release"); then
+if ! (cd "$PLUGINDIR/$plugin" && "$MAKE" "$release"); then
   echo "$0: Failed to build $plugin:$release"
 fi
 for f in "$PLUGINDIR/$plugin/$release"/bin/*.jar; do
