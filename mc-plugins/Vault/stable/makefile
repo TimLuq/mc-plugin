@@ -7,6 +7,6 @@ bin/Vault.jar: build/Vault.jar
 
 build/Vault.jar:
 	mkdir -p build
-	curl "http://dev.bukkit.org/media/files/894/359/Vault.jar" -z build/Vault.jar -o build/Vault.jar --verbose --silent --location
+	$(SCRIPTDIR)/funcs/curse-bukkit vault build/Vault.jar
 
 .PHONY: build/Vault.jar
