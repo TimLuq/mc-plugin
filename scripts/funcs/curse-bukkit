@@ -1,13 +1,8 @@
 #!/bin/bash
 
 function curse-bukkit {
-  if [ -f "$2.html" ]; then
-    curl "http://mods.curse.com/bukkit-plugins/minecraft/$1/download" -z "$2.html" -o "$2.html" --silent --location
-    funcret="$?"
-  else
-    curl "http://mods.curse.com/bukkit-plugins/minecraft/$1/download" -o "$2.html" --silent --location
-    funcret="$?"
-  fi
+  get-file "http://mods.curse.com/bukkit-plugins/minecraft/$1/download" "$2.html"
+  funcret="$?"
   if [[ "$funcret" != "0" ]]; then
     return "$funcret"
   fi
@@ -15,13 +10,8 @@ function curse-bukkit {
   if [[ "$funcurl" == "" ]]; then
     return 2
   fi
-  if [ -f "$2" ]; then
-    curl "$funcurl" -z "$2" -o "$2" --silent --location
-    return "$?"
-  else
-    curl "$funcurl" -o "$2" --silent --location
-    return "$?"
-  fi
+  get-file "$funcurl" "$2"
+  return "$?"
 }
 
 if [ "${0##*/}" == "curse-bukkit" ]; then
