@@ -1,0 +1,16 @@
+#!/bin/bash
+
+function get-file {
+  if [ -f "$2" ]; then
+    curl "$1" -z "$2" -o "$2" --silent --location
+    return "$?"
+  else
+    curl "$1" -o "$2" --silent --location
+    return "$?"
+  fi
+}
+
+if [[ "${0##*/}" == "get-file" ]]; then
+  get-file "$@"
+  exit "$?"
+fi
