@@ -63,6 +63,9 @@ SCRIPTDIR="$MCPLUGINROOT/scripts"
 if [ ! -d "$MCPLUGINROOT/plugins" ]; then
   mkdir "$MCPLUGINROOT/plugins"
 fi
+if [ ! -d "$MINECRAFTDIR/plugins" ]; then
+  mkdir "$MINECRAFTDIR/plugins"
+fi
 
 COMMAND="$1"
 shift
