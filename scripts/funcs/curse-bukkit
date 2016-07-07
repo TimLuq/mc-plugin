@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. "$SCRIPTDIR/funcs/get-file"
+
 function curse-bukkit {
   get-file "http://mods.curse.com/bukkit-plugins/minecraft/$1/download" "$2.html"
   funcret="$?"
