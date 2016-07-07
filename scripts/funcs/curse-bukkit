@@ -1,0 +1,20 @@
+#!/bin/bash
+
+function curse-bukkit {
+  curl "http://mods.curse.com/bukkit-plugins/minecraft/$1/download" -z "$2.html" -o "$2.html" --silent --location
+  funcret="$?"
+  if [[ "$funcret" != "0" ]]; then
+    return "$funcret"
+  fi
+  funcurl="$(grep "data-href=" "$2.html" | sed 's/^.*data-href="\([^"]*\)".*$/\1/' | head -n 1)"
+  if [[ "$funcurl" == "" ]]; then
+    return 2
+  fi
+  curl "$funcurl" -z "$2" -o "$2" --silent --location
+  return "$?"
+}
+
+if [ "${0##*/}" == "curse-bukkit" ]; then
+  curse-bukkit "$@"
+  exit "$?"
+fi
