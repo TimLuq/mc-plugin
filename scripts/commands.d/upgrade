@@ -3,7 +3,7 @@
 . "$SCRIPTDIR/funcs/mcpluginmeta"
 
 force=""
-if [[ "$1" != "-y" ]]; then
+if [[ "$1" == "-y" ]]; then
   force="1"
   shift
 fi
