@@ -42,7 +42,7 @@ while [ ! -f "$MCPLUGINROOT/profiles.d/$MINECRAFTPROFILE" ]; do
 done
 
 MINECRAFTDIR="$(grep "^\"minecraftdir\":" "$MCPLUGINROOT/profiles.d/$MINECRAFTPROFILE" \
-  | sed 's/.*": *//' | sed 's/^ *"\(.*\)" *,? *$/\1/')"
+  | sed 's/.*": *//' | sed 's/^ *"\(.*\)" *,\{0,1\} *$/\1/')"
 if [[ "$MINECRAFTDIR" == "" ]]; then
   echo "$0: could not find minecraftdir for profile '/$MINECRAFTPROFILE'" >&2
 fi
