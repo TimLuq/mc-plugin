@@ -11,8 +11,11 @@ if ! which rsync >/dev/null; then
     wget "https://github.com/TimLuq/lsync/raw/master/lsync" -O "$MCPLUGINROOT/lsync"
     chmod +x "$MCPLUGINROOT/lsync"
   fi
-  LSYNCASRSYNC=yes
   ."$MCPLUGINROOT/lsync"
+  function rsync {
+    lsync "$@"
+    return "$?"
+  }
 fi
 
 if [ ! -f "$MCPLUGINROOT/scripts/bootstrap.sh" ]; then
