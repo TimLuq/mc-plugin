@@ -6,6 +6,15 @@ if [ ! -d "$MCPLUGINROOT" ]; then
   mkdir "$MCPLUGINROOT"
 fi
 
+if ! which rsync >/dev/null; then
+  if [ ! -x "$MCPLUGINROOT/lsync" ]; then
+    wget "https://github.com/TimLuq/lsync/raw/master/lsync" -O "$MCPLUGINROOT/lsync"
+    chmod +x "$MCPLUGINROOT/lsync"
+  fi
+  LSYNCASRSYNC=yes
+  ."$MCPLUGINROOT/lsync"
+fi
+
 if [ ! -f "$MCPLUGINROOT/scripts/bootstrap.sh" ]; then
   wget -O "/tmp/mc-plugin-master.zip" "https://github.com/TimLuq/mc-plugin/archive/master.zip"
   if [[ "$?" != "0" ]]; then
