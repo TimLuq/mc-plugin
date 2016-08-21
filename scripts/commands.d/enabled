@@ -14,7 +14,7 @@ for i in "$MINECRAFTDIR"/plugins/*.jar; do
       p="$(mcpluginmeta "$pf" "package")"
       r="$(mcpluginmeta "$pf" "release")"
     fi
-    "$MINECRAFTDIR"'/plugins/
+    
     if [ "$1" == "verbose" ] || [ "$1" == "-v" ]; then
       echo "$p:$r:$n"
       jarpluginmeta "$i" | sed 's/^/    /'
